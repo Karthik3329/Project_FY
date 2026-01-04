@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<h2>{{ result }}</h2>
+
+{% if status == "Risk" %}
+<h3 style="color:red;">Abnormal Values</h3>
+<ul>
+    {% for item in abnormal %}
+        <li>{{ item }}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p style="color:green; font-weight:bold;">
+All values are within normal medical range.
+</p>
+{% endif %}
+
+<h3>Patient Details</h3>
+<p>Age: {{ values.age }}</p>
+<p>Gender: {{ values.gender }}</p>
+
+<h3>Medical Values</h3>
+
+<table>
+<tr>
+    <th>Parameter</th>
+    <th>Your Value</th>
+    <th>Normal Range</th>
+</tr>
+
+{% for key, value in values.items() %}
+{% if key in normal %}
+<tr>
+    <td>{{ key }}</td>
+    <td>{{ value }}</td>
+    <td>{{ normal[key][0] }} – {{ normal[key][1] }}</td>
+</tr>
+{% endif %}
+{% endfor %}
+</table>
+
+<br>
+<a href="/">Check Another Patient</a>
+
+</body>
+</html>

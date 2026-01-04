@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liver Disease Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h2>Liver Disease Prediction</h2>
+
+    <form action="/predict" method="post">
+        <input type="number" name="age" placeholder="Age" required min="1">
+        <select name="gender" required>
+            <option value="">Gender</option>
+            <option value="1">Male</option>
+            <option value="0">Female</option>
+        </select>
+
+        <input type="number" step="any" name="tot_bilirubin" placeholder="Total Bilirubin" required>
+        <input type="number" step="any" name="direct_bilirubin" placeholder="Direct Bilirubin" required>
+        <input type="number" step="any" name="tot_proteins" placeholder="Total Proteins" required>
+        <input type="number" step="any" name="albumin" placeholder="Albumin" required>
+        <input type="number" step="any" name="ag_ratio" placeholder="A/G Ratio" required>
+        <input type="number" step="any" name="sgpt" placeholder="SGPT" required>
+        <input type="number" step="any" name="sgot" placeholder="SGOT" required>
+        <input type="number" step="any" name="alkphos" placeholder="Alkaline Phosphatase" required>
+
+        <button type="submit">Predict</button>
+    </form>
+</div>
+</body>
+</html>
