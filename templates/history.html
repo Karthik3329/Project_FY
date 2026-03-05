@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Prediction History</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#f4f6f9;
+    margin:0;
+}
+
+/* NAVBAR */
+
+.navbar{
+    background:#007bff;
+    color:white;
+    padding:15px 30px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.navbar a{
+    color:white;
+    text-decoration:none;
+    margin-left:15px;
+}
+
+/* PAGE */
+
+.container{
+    padding:40px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* TABLE */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th{
+    background:#007bff;
+    color:white;
+}
+
+th,td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+    text-align:center;
+}
+
+tr:hover{
+    background:#f1f1f1;
+}
+
+/* STATUS */
+
+.normal{
+    color:green;
+    font-weight:bold;
+}
+
+.risk{
+    color:red;
+    font-weight:bold;
+}
+
+/* BUTTONS */
+
+.btn{
+    padding:6px 12px;
+    text-decoration:none;
+    border-radius:5px;
+    color:white;
+}
+
+.view{
+    background:#28a745;
+}
+
+.delete{
+    background:#dc3545;
+}
+
+.empty{
+    text-align:center;
+    padding:20px;
+    color:#888;
+}
+
+</style>
+
+</head>
+<body>
+
+<!-- NAVBAR -->
+
+<div class="navbar">
+    <div><b>Liver Disease Prediction System</b></div>
+
+    <div>
+        <a href="/">Home</a>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Your Prediction History</h2>
+
+{% if history|length == 0 %}
+
+<div class="empty">
+No prediction history found.
+</div>
+
+{% else %}
+
+<table>
+
+<tr>
+<th>Date</th>
+<th>Age</th>
+<th>Gender</th>
+<th>Result</th>
+<th>View</th>
+<th>Delete</th>
+</tr>
+
+{% for item in history %}
+
+<tr>
+
+<td>{{ item.time }}</td>
+
+<td>
+{% if item.inputs %}
+{{ item.inputs.age }}
+{% else %}
+-
+{% endif %}
+</td>
+
+<td>
+{% if item.inputs %}
+    {% if item.inputs.gender == "1" %}
+        Male
+    {% else %}
+        Female
+    {% endif %}
+{% else %}
+-
+{% endif %}
+</td>
+
+<td>
+{% if item.result == "Normal" %}
+<span class="normal">Normal</span>
+{% else %}
+<span class="risk">Risk</span>
+{% endif %}
+</td>
+
+<td>
+<a class="btn view" href="/report/{{ item._id }}">
+View
+</a>
+</td>
+
+<td>
+<a class="btn delete"
+href="/delete/{{ item._id }}"
+onclick="return confirm('Delete this report?')">
+Delete
+</a>
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Register | Liver Disease Prediction</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background: linear-gradient(135deg,#007bff,#00c6ff);
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* CARD */
+
+.card{
+    background:white;
+    padding:35px;
+    width:380px;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+h2{
+    margin-top:0;
+    text-align:center;
+}
+
+/* INPUTS */
+
+input,select{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border-radius:6px;
+    border:1px solid #ccc;
+    font-size:14px;
+}
+
+input:focus,select:focus{
+    outline:none;
+    border:1px solid #007bff;
+}
+
+/* BUTTON */
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    border:none;
+    background:#007bff;
+    color:white;
+    font-size:15px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0056b3;
+}
+
+/* FOOTER */
+
+.footer{
+    text-align:center;
+    margin-top:15px;
+    font-size:14px;
+}
+
+.footer a{
+    color:#007bff;
+    text-decoration:none;
+}
+
+.footer a:hover{
+    text-decoration:underline;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Create Account</h2>
+
+<form method="POST">
+
+<input type="text" name="name" placeholder="Full Name" required>
+
+<input type="email" name="email" placeholder="Email Address" required>
+
+<input type="password" name="password" placeholder="Password" required>
+
+<select name="role" required>
+<option value="">Register As</option>
+<option value="user">User</option>
+<option value="admin">Admin</option>
+</select>
+
+<button type="submit">Register</button>
+
+</form>
+
+<div class="footer">
+Already have an account? <a href="/login">Login</a>
+</div>
+
+</div>
+
+</body>
+</html>

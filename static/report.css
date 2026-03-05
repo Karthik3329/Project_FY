@@ -1,0 +1,102 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+}
+
+.report-container {
+    width: 900px;
+    margin: 30px auto;
+    background: white;
+    padding: 30px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid black;
+    padding-bottom: 10px;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.patient-box {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #aaa;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.section-title {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.section-sub {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #ddd;
+}
+
+th, td {
+    border: 1px solid #aaa;
+    padding: 8px;
+    text-align: center;
+}
+
+.abnormal {
+    color: red;
+    font-weight: bold;
+}
+
+.interpretation {
+    margin-top: 20px;
+}
+
+.normal-text {
+    color: green;
+    font-weight: bold;
+}
+
+.risk-text {
+    color: red;
+    font-weight: bold;
+}
+
+.Normal {
+    color: green;
+    font-weight: bold;
+}
+
+.Risk {
+    color: red;
+    font-weight: bold;
+}
+
+.home-btn{
+    position:absolute;
+    top:20px;
+    right:20px;
+    background:#2c7be5;
+    color:white;
+    padding:8px 18px;
+    text-decoration:none;
+    border-radius:6px;
+    font-weight:bold;
+}
+
+.home-btn:hover{
+    background:#1a5ec6;
+}

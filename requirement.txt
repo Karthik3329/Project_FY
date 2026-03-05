@@ -1,5 +1,4 @@
-flask
-pandas
-numpy
-scikit-learn
-joblib
+pymongo
+dnspython
+flask-bcrypt
+flask-login

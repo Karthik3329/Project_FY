@@ -1,32 +1,197 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Liver Disease Prediction</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<title>Liver Disease Prediction</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#f4f6f9;
+    margin:0;
+}
+
+/* NAVBAR */
+
+.navbar{
+    background:#007bff;
+    color:white;
+    padding:15px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.navbar a{
+    color:white;
+    text-decoration:none;
+    margin-left:15px;
+}
+
+/* PAGE */
+
+.container{
+    display:flex;
+    padding:30px;
+    gap:30px;
+}
+
+/* CARDS */
+
+.form-card,.history-card{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    flex:1;
+}
+
+/* FORM */
+
+input,select{
+    width:100%;
+    padding:10px;
+    margin-bottom:10px;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    background:#007bff;
+    color:white;
+    border:none;
+    cursor:pointer;
+    border-radius:5px;
+}
+
+/* TABLE */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:10px;
+    border-bottom:1px solid #ddd;
+    text-align:center;
+}
+
+th{
+    background:#007bff;
+    color:white;
+}
+
+/* STATUS */
+
+.status-normal{
+    color:green;
+    font-weight:bold;
+}
+
+.status-risk{
+    color:red;
+    font-weight:bold;
+}
+
+</style>
+
 </head>
+
 <body>
-<div class="container">
-    <h2>Liver Disease Prediction</h2>
 
-    <form action="/predict" method="post">
-        <input type="number" name="age" placeholder="Age" required min="1">
-        <select name="gender" required>
-            <option value="">Gender</option>
-            <option value="1">Male</option>
-            <option value="0">Female</option>
-        </select>
+<!-- NAVBAR -->
 
-        <input type="number" step="any" name="tot_bilirubin" placeholder="Total Bilirubin" required>
-        <input type="number" step="any" name="direct_bilirubin" placeholder="Direct Bilirubin" required>
-        <input type="number" step="any" name="tot_proteins" placeholder="Total Proteins" required>
-        <input type="number" step="any" name="albumin" placeholder="Albumin" required>
-        <input type="number" step="any" name="ag_ratio" placeholder="A/G Ratio" required>
-        <input type="number" step="any" name="sgpt" placeholder="SGPT" required>
-        <input type="number" step="any" name="sgot" placeholder="SGOT" required>
-        <input type="number" step="any" name="alkphos" placeholder="Alkaline Phosphatase" required>
+<div class="navbar">
 
-        <button type="submit">Predict</button>
-    </form>
+<div>
+<b>Liver Disease Prediction System</b>
 </div>
+
+<div>
+Welcome, {{ username }} |
+<a href="/history">Full History</a>
+<a href="/logout">Logout</a>
+</div>
+
+</div>
+
+
+<div class="container">
+
+<!-- PREDICTION FORM -->
+
+<div class="form-card">
+
+<h2>New Prediction</h2>
+
+<form action="/predict" method="post">
+
+<input type="number" name="age" placeholder="Age" required>
+
+<select name="gender" required>
+<option value="">Gender</option>
+<option value="1">Male</option>
+<option value="0">Female</option>
+</select>
+
+<input type="number" step="any" name="tot_bilirubin" placeholder="Total Bilirubin" required>
+<input type="number" step="any" name="direct_bilirubin" placeholder="Direct Bilirubin" required>
+<input type="number" step="any" name="tot_proteins" placeholder="Total Proteins" required>
+<input type="number" step="any" name="albumin" placeholder="Albumin" required>
+<input type="number" step="any" name="ag_ratio" placeholder="A/G Ratio" required>
+<input type="number" step="any" name="sgpt" placeholder="SGPT" required>
+<input type="number" step="any" name="sgot" placeholder="SGOT" required>
+<input type="number" step="any" name="alkphos" placeholder="Alkaline Phosphatase" required>
+
+<button type="submit">Predict</button>
+
+</form>
+
+</div>
+
+
+<!-- RECENT HISTORY -->
+
+<div class="history-card">
+
+<h3>Recent Predictions</h3>
+
+<table>
+
+<tr>
+<th>Date</th>
+<th>Age</th>
+<th>Result</th>
+</tr>
+
+{% for item in history %}
+
+<tr>
+
+<td>{{ item.time }}</td>
+
+<td>{{ item.inputs.age }}</td>
+
+<td>
+
+{% if item.result == "Normal" %}
+<span class="status-normal">Normal</span>
+{% else %}
+<span class="status-risk">Risk</span>
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
 </body>
 </html>

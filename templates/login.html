@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Liver Disease Prediction - Login</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#f4f6f9;
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* CARD */
+
+.card{
+    background:white;
+    padding:35px;
+    width:380px;
+    border-radius:10px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.1);
+}
+
+h2{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+/* INPUT */
+
+input, select{
+    width:100%;
+    padding:10px;
+    margin-bottom:12px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+/* BUTTON */
+
+button{
+    width:100%;
+    padding:10px;
+    background:#007bff;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:15px;
+}
+
+button:hover{
+    background:#0056b3;
+}
+
+/* FOOTER */
+
+.footer{
+    text-align:center;
+    margin-top:15px;
+}
+
+.footer a{
+    text-decoration:none;
+    color:#007bff;
+}
+
+.footer a:hover{
+    text-decoration:underline;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Login</h2>
+
+<form method="POST">
+
+<input type="email" name="email" placeholder="Email Address" required>
+
+<input type="password" name="password" placeholder="Password" required>
+
+<select name="role" required>
+<option value="">Login As</option>
+<option value="user">User</option>
+<option value="admin">Admin</option>
+</select>
+
+<button type="submit">Login</button>
+
+</form>
+
+<div class="footer">
+<p>Don't have an account? <a href="/register">Register</a></p>
+</div>
+
+</div>
+
+</body>
+</html>

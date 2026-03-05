@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f9;
+margin:0;
+}
+
+.header{
+background:#2c3e50;
+color:white;
+padding:20px;
+display:flex;
+justify-content:space-between;
+}
+
+.container{
+padding:30px;
+}
+
+.card{
+background:white;
+padding:20px;
+margin-bottom:30px;
+border-radius:10px;
+box-shadow:0 5px 10px rgba(0,0,0,0.1);
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid #ddd;
+text-align:left;
+}
+
+th{
+background:#f1f1f1;
+}
+
+button{
+padding:8px 12px;
+border:none;
+background:#e74c3c;
+color:white;
+border-radius:5px;
+cursor:pointer;
+}
+
+.search{
+margin-bottom:20px;
+}
+
+.chart-container{
+width:60%;
+margin:auto;
+}
+
+.chart-box{
+width:320px;
+height:320px;
+margin:auto;
+}
+
+.chart-box canvas{
+width:100% !important;
+height:100% !important;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+<h2>Admin Dashboard</h2>
+<a href="/logout" style="color:white;">Logout</a>
+</div>
+
+<div class="container">
+
+<!-- SEARCH -->
+<div class="card">
+
+<form method="GET" action="/admin" class="search">
+
+<input type="text" name="search" placeholder="Search user">
+
+<button type="submit">Search</button>
+
+</form>
+
+</div>
+
+<!-- USERS TABLE -->
+<div class="card">
+
+<h3>All Users</h3>
+
+<table>
+
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Role</th>
+<th>Action</th>
+</tr>
+
+{% for user in users %}
+
+<tr>
+
+<td>{{ user.name }}</td>
+
+<td>{{ user.email }}</td>
+
+<td>{{ user.role }}</td>
+
+<td>
+
+<a href="/delete_user/{{ user._id }}">
+<button>Delete</button>
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+<!-- PREDICTION GRAPH -->
+<div class="card">
+
+<h3 style="text-align:center;">Prediction Analytics</h3>
+
+<div class="chart-box">
+<canvas id="predictionChart"></canvas>
+</div>
+
+</div>
+
+<script>
+
+const normalCount = {{ normal_count }};
+const riskCount = {{ risk_count }};
+
+const ctx = document.getElementById('predictionChart').getContext('2d');
+
+new Chart(ctx, {
+
+type: 'doughnut',
+
+data: {
+labels: ['Normal', 'Risk'],
+
+datasets: [{
+data: [normalCount, riskCount],
+backgroundColor: [
+'#28a745',
+'#dc3545'
+]
+}]
+},
+
+options: {
+
+plugins:{
+legend:{
+position:'bottom'
+}
+}
+
+}
+
+});
+
+</script>
+
+
+</body>
+</html>

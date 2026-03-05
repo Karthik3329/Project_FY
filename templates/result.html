@@ -1,52 +1,92 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Result</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>LFT Report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='report.css') }}">
 </head>
 <body>
 
-<h2>{{ result }}</h2>
+<div class="report-container">
 
-{% if status == "Risk" %}
-<h3 style="color:red;">Abnormal Values</h3>
-<ul>
-    {% for item in abnormal %}
-        <li>{{ item }}</li>
-    {% endfor %}
-</ul>
-{% else %}
-<p style="color:green; font-weight:bold;">
-All values are within normal medical range.
-</p>
-{% endif %}
+    <!-- Header -->
+    <div class="report-header">
+        <div class="logo">LiverCare</div>
+        <div class="contact">
+            Email: support@livercare.ai <br>
+            Phone: +91 xxxxxxxxx
+        </div>
+    </div>
 
-<h3>Patient Details</h3>
-<p>Age: {{ values.age }}</p>
-<p>Gender: {{ values.gender }}</p>
 
-<h3>Medical Values</h3>
+    <!-- Patient Info -->
+    <div class="patient-box">
+        <div>
+            <p><strong>Age/Gender:</strong> {{ values.age }} /
+                {% if values.gender == "1" %} Male {% else %} Female {% endif %}
+            </p>
+        </div>
+        <div>
+            <p><strong>Date:</strong> {{ report_time }}</p>
+            <p><strong>Status:</strong>
+                <span class="{{ status }}">{{ status }}</span>
+            </p>
+        </div>
+    </div>
 
-<table>
-<tr>
-    <th>Parameter</th>
-    <th>Your Value</th>
-    <th>Normal Range</th>
-</tr>
+    <h3 class="section-title">Result</h3>
+    <h4 class="section-sub"></h4>
 
-{% for key, value in values.items() %}
-{% if key in normal %}
-<tr>
-    <td>{{ key }}</td>
-    <td>{{ value }}</td>
-    <td>{{ normal[key][0] }} – {{ normal[key][1] }}</td>
-</tr>
-{% endif %}
-{% endfor %}
-</table>
+    <!-- Test Table -->
+    <table>
+        <tr>
+            <th>Test Description</th>
+            <th>Result</th>
+            <th>Ref. Range</th>
+            <th>Unit</th>
+        </tr>
 
-<br>
-<a href="/">Check Another Patient</a>
+        {% for key, value in values.items() %}
+            {% if key in normal %}
+            <tr>
+                <td>{{ key.replace("_"," ").upper() }}</td>
+                <td class="{% if value < normal[key][0] or value > normal[key][1] %}abnormal{% endif %}">
+                    {{ value }}
+                </td>
+                <td>{{ normal[key][0] }} - {{ normal[key][1] }}</td>
+                <td>
+                    {% if key in ['sgpt','sgot'] %}IU/L
+                    {% elif key == 'alkphos' %}U/L
+                    {% elif key in ['tot_proteins','albumin'] %}g/dL
+                    {% else %}mg/dL
+                    {% endif %}
+                </td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+
+    <!-- Interpretation -->
+    <div class="interpretation">
+        <h4>Interpretation:</h4>
+
+        {% if status == "Normal" %}
+            <p class="normal-text">
+                All liver parameters are within normal range.
+                No liver disease risk detected.
+            </p>
+        {% else %}
+            <p class="risk-text">
+                Some parameters are outside normal range.
+                Possible liver disease risk detected.
+                Clinical consultation recommended.
+            </p>
+        {% endif %}
+    </div>
+    <div style="text-align:center; margin-top:30px;">
+    <a href="/" class="home-btn">Back to Home</a>
+</div>
+
+</div>
 
 </body>
 </html>

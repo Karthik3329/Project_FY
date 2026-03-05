@@ -7,7 +7,7 @@ This project predicts liver disease using Machine Learning.
 - Flask
 - Random Forest Algorithm
 - HTML, CSS
-
+Upload liver test Report Image → Auto Extract Values → Predict
 ## How to Run
 1. Install dependencies:
    pip install -r requirements.txt
