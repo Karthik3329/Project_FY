@@ -16,6 +16,7 @@ db = client["liver_app"]
 users = db["users"]
 predictions = db["predictions"]
 
+
 # ---------------- HOME ----------------
 @app.route('/')
 def home():
@@ -45,7 +46,7 @@ def register():
         name = request.form["name"]
         email = request.form["email"]
         password = request.form["password"]
-        role = request.form.get("role")
+        role = request.form["role"]
 
         hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
 
@@ -71,7 +72,10 @@ def login():
         password = request.form["password"]
         role = request.form["role"]
 
-        user = users.find_one({"email": email, "role": role})
+        user = users.find_one({
+            "email": email,
+            "role": role
+        })
 
         if user and bcrypt.check_password_hash(user["password"], password):
 
@@ -96,29 +100,45 @@ def logout():
     return redirect("/login")
 
 
-# ---------------- ADMIN PANEL ----------------
+# ---------------- ADMIN DASHBOARD ----------------
 @app.route("/admin")
 def admin():
 
     if session.get("role") != "admin":
         return redirect("/login")
 
-    all_users = list(users.find())
-    all_predictions = list(predictions.find())
+    search = request.args.get("search")
 
-    normal_count = predictions.count_documents({"result": "Normal"})
-    risk_count = predictions.count_documents({"result": "Risk"})
+    if search:
+        users_list = list(users.find({
+            "$or":[
+                {"name":{"$regex":search,"$options":"i"}},
+                {"email":{"$regex":search,"$options":"i"}}
+            ]
+        }))
+    else:
+        users_list = list(users.find())
+
+    predictions_list = list(predictions.find())
+
+    # ANALYTICS
+    total_users = users.count_documents({})
+    total_predictions = predictions.count_documents({})
+    normal_count = predictions.count_documents({"result":"Normal"})
+    risk_count = predictions.count_documents({"result":"Risk"})
 
     return render_template(
         "admin.html",
-        users=all_users,
-        predictions=all_predictions,
-        normal_count=normal_count,
-        risk_count=risk_count
+        users=users_list,
+        predictions=predictions_list,
+        total_users=total_users,
+        total_predictions=total_predictions,
+        risk_count=risk_count,
+        normal_count=normal_count
     )
 
 
-# ---------------- DELETE USER (ADMIN) ----------------
+# ---------------- DELETE USER ----------------
 @app.route("/delete_user/<id>")
 def delete_user(id):
 
@@ -126,17 +146,8 @@ def delete_user(id):
         return redirect("/login")
 
     users.delete_one({"_id": ObjectId(id)})
-    return redirect("/admin")
+    predictions.delete_many({"user_id": ObjectId(id)})
 
-
-# ---------------- DELETE PREDICTION (ADMIN) ----------------
-@app.route("/delete_prediction/<id>")
-def delete_prediction(id):
-
-    if session.get("role") != "admin":
-        return redirect("/login")
-
-    predictions.delete_one({"_id": ObjectId(id)})
     return redirect("/admin")
 
 
@@ -190,13 +201,8 @@ def predict():
                 abnormal.append(f"{key} is HIGH")
 
     if len(abnormal) == 0:
-
-        final_result = "Normal"
         status = "Normal"
-
     else:
-
-        final_result = "Risk"
         status = "Risk"
 
     current_time = datetime.now().strftime("%d-%m-%Y %H:%M")
@@ -213,7 +219,6 @@ def predict():
 
     return render_template(
         'result.html',
-        result=final_result,
         status=status,
         abnormal=abnormal,
         values=inputs,
@@ -247,10 +252,8 @@ def report(id):
         return redirect("/login")
 
     report = predictions.find_one({
-
         "_id": ObjectId(id),
         "user_id": ObjectId(session["user_id"])
-
     })
 
     if not report:
@@ -287,10 +290,8 @@ def delete_report(id):
         return redirect("/login")
 
     predictions.delete_one({
-
         "_id": ObjectId(id),
         "user_id": ObjectId(session["user_id"])
-
     })
 
     return redirect("/history")

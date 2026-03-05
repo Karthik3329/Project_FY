@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <title>Admin Dashboard</title>
 
@@ -19,6 +20,12 @@ color:white;
 padding:20px;
 display:flex;
 justify-content:space-between;
+align-items:center;
+}
+
+.header a{
+color:white;
+text-decoration:none;
 }
 
 .container{
@@ -39,7 +46,7 @@ border-collapse:collapse;
 }
 
 th,td{
-padding:10px;
+padding:12px;
 border-bottom:1px solid #ddd;
 text-align:left;
 }
@@ -49,7 +56,7 @@ background:#f1f1f1;
 }
 
 button{
-padding:8px 12px;
+padding:6px 12px;
 border:none;
 background:#e74c3c;
 color:white;
@@ -57,24 +64,27 @@ border-radius:5px;
 cursor:pointer;
 }
 
+button:hover{
+background:#c0392b;
+}
+
 .search{
 margin-bottom:20px;
 }
 
-.chart-container{
-width:60%;
-margin:auto;
+.search input{
+padding:8px;
+width:200px;
+}
+
+.search button{
+background:#3498db;
 }
 
 .chart-box{
 width:320px;
 height:320px;
 margin:auto;
-}
-
-.chart-box canvas{
-width:100% !important;
-height:100% !important;
 }
 
 </style>
@@ -85,7 +95,7 @@ height:100% !important;
 
 <div class="header">
 <h2>Admin Dashboard</h2>
-<a href="/logout" style="color:white;">Logout</a>
+<a href="/logout">Logout</a>
 </div>
 
 <div class="container">
@@ -122,17 +132,13 @@ height:100% !important;
 <tr>
 
 <td>{{ user.name }}</td>
-
 <td>{{ user.email }}</td>
-
 <td>{{ user.role }}</td>
 
 <td>
-
 <a href="/delete_user/{{ user._id }}">
 <button>Delete</button>
 </a>
-
 </td>
 
 </tr>
@@ -154,43 +160,38 @@ height:100% !important;
 
 </div>
 
+</div>
+
 <script>
 
-const normalCount = {{ normal_count }};
-const riskCount = {{ risk_count }};
+const normalCount = Number("{{ normal_count or 0 }}");
+const riskCount = Number("{{ risk_count or 0 }}");
 
-const ctx = document.getElementById('predictionChart').getContext('2d');
+const ctx = document.getElementById("predictionChart").getContext("2d");
 
 new Chart(ctx, {
-
-type: 'doughnut',
+type: "doughnut",
 
 data: {
-labels: ['Normal', 'Risk'],
-
+labels: ["Normal", "Risk"],
 datasets: [{
 data: [normalCount, riskCount],
-backgroundColor: [
-'#28a745',
-'#dc3545'
-]
+backgroundColor: ["#28a745", "#dc3545"]
 }]
 },
 
-options: {
-
+options:{
+responsive:true,
 plugins:{
 legend:{
-position:'bottom'
+position:"bottom"
 }
 }
-
 }
 
 });
 
 </script>
-
 
 </body>
 </html>
